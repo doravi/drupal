@@ -1,4 +1,4 @@
-# from https://www.drupal.org/requirements/php#drupalversions
+# from https://www.drupal.org/requirements/php#drupalversions test
 FROM php:7.0-apache
 
 RUN a2enmod rewrite
