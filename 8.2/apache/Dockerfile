@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev \
 	&& docker-php-ext-install gd mbstring opcache pdo pdo_mysql pdo_pgsql zip
 
 # Install software 
-RUN apt-get install -y git
+RUN apt-get install git-all
 # Make ssh dir
 RUN mkdir /root/.ssh/
 
@@ -20,7 +20,7 @@ ADD id_rsa /root/.ssh/id_rsa
 # Create known_hosts
 RUN touch /root/.ssh/known_hosts
 # Add bitbuckets key
-RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+RUN ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
