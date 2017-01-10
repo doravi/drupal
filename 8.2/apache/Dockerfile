@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git-
 RUN mkdir /root/.ssh/
 
 # Copy over private key, and set permissions
-ADD id_rsa /root/.ssh/id_rsa
+#ADD id_rsa /root/.ssh/id_rsa
 
 # Create known_hosts
 RUN touch /root/.ssh/known_hosts
