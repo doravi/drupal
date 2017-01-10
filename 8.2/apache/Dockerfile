@@ -10,10 +10,14 @@ RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git-
 	&& docker-php-ext-install gd mbstring opcache pdo pdo_mysql pdo_pgsql zip
 	
 # Make ssh dir
-RUN mkdir /root/.ssh/
+#RUN mkdir /root/.ssh/
+
+RUN mkdir -p /root/.ssh
+ADD id_rsa /root/.ssh/id_rsa
+RUN chmod 700 /root/.ssh/id_rsa
 
 # Copy over private key, and set permissions
-ADD id_rsa ~/.ssh/id_rsa
+#ADD id_rsa ~/.ssh/id_rsa
 
 # Create known_hosts
 RUN touch /root/.ssh/known_hosts
