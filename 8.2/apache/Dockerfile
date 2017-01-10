@@ -13,9 +13,9 @@ RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git-
 #RUN mkdir /root/.ssh/
 
 RUN mkdir -p /root/.ssh
-RUN mkdir -p /root/.ssh/id_rsa
-ADD id_rsa /root/.ssh/id_rsa
+#ADD id_rsa /root/.ssh/id_rsa
 RUN chmod 700 /root/.ssh/id_rsa
+RUN git clone git@github.com:doravi/drupalSiteConfig.git temp
 
 # Copy over private key, and set permissions
 #ADD id_rsa ~/.ssh/id_rsa
