@@ -4,10 +4,21 @@ FROM php:7.0-apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev \
+RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git-all \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip
+
+# Make ssh dir
+RUN mkdir -p /root/.ssh
+RUN chown -R root:root /root/.ssh
+RUN chmod 700 /root/.ssh
+
+
+# Create known_hosts
+RUN touch /root/.ssh/known_hosts
+# Add github key
+RUN ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
 
 WORKDIR /var/www/html
 
@@ -20,3 +31,8 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
 	&& tar -xz --strip-components=1 -f drupal.tar.gz \
 	&& rm drupal.tar.gz \
 	&& chown -R www-data:www-data sites
+	
+# Clone the conf files into the docker container
+RUN git clone https://github.com/doravi/drupal7config.git temp \
+	&& cp -r temp/* /var/www/html \
+	&& rm -rf temp
