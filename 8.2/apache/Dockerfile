@@ -10,15 +10,10 @@ RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git-
 	&& docker-php-ext-install gd mbstring opcache pdo pdo_mysql pdo_pgsql zip
 	
 # Make ssh dir
-#RUN mkdir /root/.ssh/
 RUN mkdir -p /root/.ssh
-#ADD id_rsa /root/.ssh/id_rsa
 RUN chown -R root:root /root/.ssh
 RUN chmod 700 /root/.ssh
-RUN git clone git@github.com:doravi/drupalSiteConfig.git temp
 
-# Copy over private key, and set permissions
-#ADD id_rsa ~/.ssh/id_rsa
 
 # Create known_hosts
 RUN touch /root/.ssh/known_hosts
@@ -49,6 +44,6 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
 	&& chown -R www-data:www-data sites modules themes
 
 # Clone the conf files into the docker container
-RUN git clone git@github.com:doravi/drupalSiteConfig.git temp \
+RUN RUN git clone https://github.com/doravi/drupalSiteConfig.git temp \
 	&& mv temp/.git /var/www/html/.git \
 	&& rm -rf temp
