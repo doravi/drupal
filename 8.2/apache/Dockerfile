@@ -44,6 +44,6 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
 	&& chown -R www-data:www-data sites modules themes
 
 # Clone the conf files into the docker container
-#RUN git clone https://github.com/doravi/drupalSiteConfig.git temp \
-#	&& cp -r temp/* /var/www/html \
-#	&& rm -rf temp
+RUN git clone https://github.com/doravi/Drupal8AfterWizard.git temp \
+	&& cp -r temp/* /var/www/html \
+	&& rm -rf temp
