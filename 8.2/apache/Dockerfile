@@ -47,3 +47,6 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
 RUN git clone https://github.com/doravi/Drupal8AfterWizard.git temp \
 	&& cp -r temp/* /var/www/html \
 	&& rm -rf temp
+	&& chmod 777  -R /var/www/html
+	
+
