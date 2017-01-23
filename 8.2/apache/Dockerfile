@@ -4,7 +4,7 @@ FROM php:7.0-apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git-all \
+RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git-all wget \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd mbstring opcache pdo pdo_mysql pdo_pgsql zip
@@ -51,8 +51,7 @@ RUN git clone https://github.com/doravi/Drupal8AfterWizard.git temp \
 RUN chmod 777  -R /var/www/html
 
 #Install gigya module
-RUN apt-get install wget \
-	&& apt-get install curl php5-cli git \
+RUN apt-get install curl php5-cli git \
 	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 	
 RUN composer config repositories.drupal composer https://packages.drupal.org/8 \
