@@ -48,13 +48,13 @@ RUN git clone https://github.com/doravi/Drupal8AfterWizard.git temp \
 	&& cp -r temp/* /var/www/html \
 	&& rm -rf temp
 	
-RUN chmod 777  -R /var/www/html
+RUN chmod 777 -R /var/www/html
 
 #Install gigya module
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN cd /var/www/html
-RUN composer config repositories.drupal composer https://packages.drupal.org/8 
-RUN composer require drupal/gigya
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#RUN cd /var/www/html
+#RUN composer config repositories.drupal composer https://packages.drupal.org/8 
+#RUN composer require drupal/gigya
 
 	
 
