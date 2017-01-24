@@ -1,7 +1,5 @@
 FROM php:5.6-apache
 
-RUN a2enmod rewrite
-
 MAINTAINER Reload A/S <kontakt@reload.dk>
 
 ENV PATH /root/.composer/vendor/bin:$PATH
@@ -11,10 +9,7 @@ RUN \
   apt-get update && \
   # Install packages needed to enable an extra repository.
   DEBIAN_FRONTEND=noninteractive apt-get -y install python-software-properties && \
-  # Add a repo that contains php ${PHP_VERSION}
-  LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && \
   # Do the remaining installation of packages.
-  apt-get update && \
   DEBIAN_FRONTEND=noninteractive \
     apt-get -y install \
       apache2 \
