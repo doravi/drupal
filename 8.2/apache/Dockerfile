@@ -54,9 +54,8 @@ RUN chmod 777  -R /var/www/html
 RUN apt-get update
 RUN apt-get install curl php5-cli git -y
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-	
+RUN cd /var/www/html
 RUN composer config repositories.drupal composer https://packages.drupal.org/8 
-RUN cd /var/www/html 
 RUN composer require drupal/gigya
 
 	
