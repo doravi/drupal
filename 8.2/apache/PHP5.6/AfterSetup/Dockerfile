@@ -3,25 +3,8 @@ FROM php:7.0-apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git-all wget curl php5-cli git \
-	&& \
-	  a2enmod rewrite && \
-	  a2enmod ssl && \
-	  a2ensite default-ssl && \
-	  a2enconf drupal && \
-	  phpenmod drupal-recommended && \
-	  phpenmod xdebug
-	  # Drush 8 is the current stable that supports Drupal version 6, 7 and 8.
-RUN curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer global require drush/drush:8.* 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-ENV PHP_DEFAULT_EXTENSIONS calendar ctype curl dom exif fileinfo ftp gd gettext iconv json mcrypt mysql mysqli mysqlnd opcache pdo pdo_mysql phar posix readline shmop simplexml soap sockets sysvmsg sysvsem sysvshm tokenizer wddx xdebug xhprof xml xmlreader xmlwriter xsl mbstring zip
-
-	&& rm -rf /var/lib/apt/lists/* \
-	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install gd mbstring opcache pdo pdo_mysql pdo_pgsql zip
-	
+RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git-all wget curl php5-cli git 
+	  
 # Make ssh dir
 RUN mkdir -p /root/.ssh
 RUN chown -R root:root /root/.ssh
@@ -55,6 +38,25 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
 	&& tar -xz --strip-components=1 -f drupal.tar.gz \
 	&& rm drupal.tar.gz \
 	&& chown -R www-data:www-data sites modules themes
+
+RUN apt-get update && apt-get install -y \
+	  a2enmod rewrite && \
+	  a2enmod ssl && \
+	  a2ensite default-ssl && \
+	  a2enconf drupal && \
+	  phpenmod drupal-recommended && \
+	  phpenmod xdebug
+	  # Drush 8 is the current stable that supports Drupal version 6, 7 and 8.
+RUN curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer global require drush/drush:8.* 
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENV PHP_DEFAULT_EXTENSIONS calendar ctype curl dom exif fileinfo ftp gd gettext iconv json mcrypt mysql mysqli mysqlnd opcache pdo pdo_mysql phar posix readline shmop simplexml soap sockets sysvmsg sysvsem sysvshm tokenizer wddx xdebug xhprof xml xmlreader xmlwriter xsl mbstring zip
+
+	&& rm -rf /var/lib/apt/lists/* \
+	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
+	&& docker-php-ext-install gd mbstring opcache pdo pdo_mysql pdo_pgsql zip
+	
 
 # Clone the conf files into the docker container
 RUN git clone https://github.com/doravi/Drupal8AfterWizard.git temp \
