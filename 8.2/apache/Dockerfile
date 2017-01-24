@@ -51,7 +51,8 @@ RUN git clone https://github.com/doravi/Drupal8AfterWizard.git temp \
 RUN chmod 777  -R /var/www/html
 
 #Install gigya module
-RUN apt-get install curl php5-cli git 
+RUN apt-get update
+RUN apt-get install curl php5-cli git -y
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 	
 RUN composer config repositories.drupal composer https://packages.drupal.org/8 
