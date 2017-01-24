@@ -1,20 +1,3 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
- @doravi
- Watch 1
-  Star 0
- Fork 0 reload/docker-drupal-apache-ssl
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs
-Branch: master Find file Copy pathdocker-drupal-apache-ssl/Dockerfile
-1bbded8  on Nov 22, 2016
-@arnested arnested Add memcache and memcached PHP extensions
-4 contributors @arnested @danquah @xendk @CarstenHoyer
-RawBlameHistory     
-58 lines (51 sloc)  1.99 KB
 FROM phusion/baseimage:0.9.18
 
 MAINTAINER Reload A/S <kontakt@reload.dk>
