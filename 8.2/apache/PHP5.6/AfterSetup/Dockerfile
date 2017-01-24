@@ -39,7 +39,8 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
 	&& rm drupal.tar.gz \
 	&& chown -R www-data:www-data sites modules themes
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update 
+RUN apt-get install -y \
 	  a2enmod rewrite && \
 	  a2enmod ssl && \
 	  a2ensite default-ssl && \
