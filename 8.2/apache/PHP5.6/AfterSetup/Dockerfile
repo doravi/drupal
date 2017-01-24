@@ -10,11 +10,11 @@ RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git-
 	  a2ensite default-ssl && \
 	  a2enconf drupal && \
 	  phpenmod drupal-recommended && \
-	  phpenmod xdebug && \
+	  phpenmod xdebug
 	  # Drush 8 is the current stable that supports Drupal version 6, 7 and 8.
-	  curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer && \
-	  composer global require drush/drush:8.* && \
-	  apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer global require drush/drush:8.* 
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV PHP_DEFAULT_EXTENSIONS calendar ctype curl dom exif fileinfo ftp gd gettext iconv json mcrypt mysql mysqli mysqlnd opcache pdo pdo_mysql phar posix readline shmop simplexml soap sockets sysvmsg sysvsem sysvshm tokenizer wddx xdebug xhprof xml xmlreader xmlwriter xsl mbstring zip
 
@@ -56,13 +56,6 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
 	&& rm drupal.tar.gz \
 	&& chown -R www-data:www-data sites modules themes
 
-# Clone the conf files into the docker container
-RUN git clone https://github.com/doravi/Drupal8AfterWizard.git temp \
-	&& cp -r temp/* /var/www/html \
-	&& rm -rf temp
-	
-RUN chmod 777 -R /var/www/html
-  
 # Clone the conf files into the docker container
 RUN git clone https://github.com/doravi/Drupal8AfterWizard.git temp \
 	&& cp -r temp/* /var/www/html \
