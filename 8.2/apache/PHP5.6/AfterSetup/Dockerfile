@@ -1,1 +1,87 @@
-test
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Gist
+ @doravi
+ Watch 1
+  Star 0
+ Fork 0 reload/docker-drupal-apache-ssl
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs
+Branch: master Find file Copy pathdocker-drupal-apache-ssl/Dockerfile
+1bbded8  on Nov 22, 2016
+@arnested arnested Add memcache and memcached PHP extensions
+4 contributors @arnested @danquah @xendk @CarstenHoyer
+RawBlameHistory     
+58 lines (51 sloc)  1.99 KB
+FROM phusion/baseimage:0.9.18
+
+MAINTAINER Reload A/S <kontakt@reload.dk>
+
+COPY files/etc/ /etc/
+
+ENV PATH /root/.composer/vendor/bin:$PATH
+ENV PHP_VERSION 5.6
+
+RUN \
+  apt-get update && \
+  # Install packages needed to enable an extra repository.
+  DEBIAN_FRONTEND=noninteractive apt-get -y install python-software-properties && \
+  # Add a repo that contains php ${PHP_VERSION}
+  LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && \
+  # Do the remaining installation of packages.
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive \
+    apt-get -y install \
+      apache2 \
+      # Drush needs this to work
+      mysql-client \
+      libapache2-mod-php${PHP_VERSION} \
+      # Default extensions.
+      php${PHP_VERSION}-curl \
+      php${PHP_VERSION}-gd \
+      php${PHP_VERSION}-mysql \
+      php${PHP_VERSION}-xml \
+      php${PHP_VERSION}-xdebug \
+      php${PHP_VERSION}-xhprof \
+      php${PHP_VERSION}-mbstring \
+      php${PHP_VERSION}-mcrypt \
+      php${PHP_VERSION}-soap \
+      # Added for installing composer.
+      php${PHP_VERSION}-zip \
+      # Other extensions
+      php${PHP_VERSION}-intl \
+      php-memcache \
+      php-memcached \
+      # For default snakeoil certificates which SSL is configuered to use
+      # per default in Apache.
+      ssl-cert \
+  && \
+  a2enmod rewrite && \
+  a2enmod ssl && \
+  a2ensite default-ssl && \
+  a2enconf drupal && \
+  phpenmod drupal-recommended && \
+  phpenmod xdebug && \
+  # Drush 8 is the current stable that supports Drupal version 6, 7 and 8.
+  curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer && \
+  composer global require drush/drush:8.* && \
+  apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENV PHP_DEFAULT_EXTENSIONS calendar ctype curl dom exif fileinfo ftp gd gettext iconv json mcrypt mysql mysqli mysqlnd opcache pdo pdo_mysql phar posix readline shmop simplexml soap sockets sysvmsg sysvsem sysvshm tokenizer wddx xdebug xhprof xml xmlreader xmlwriter xsl mbstring zip
+
+# Clone the conf files into the docker container
+RUN git clone https://github.com/doravi/Drupal8AfterWizard.git temp \
+	&& cp -r temp/* /var/www/html \
+	&& rm -rf temp
+	
+RUN chmod 777 -R /var/www/html
+
+#Install gigya module
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#RUN cd /var/www/html
+#RUN composer config repositories.drupal composer https://packages.drupal.org/8 
+#RUN composer require drupal/gigya
+
+EXPOSE 80 443
