@@ -42,14 +42,5 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
 	&& rm drupal.tar.gz \
 	&& chown -R www-data:www-data sites modules themes
 
-# Download latest stable release using the code below or browse to github.com/drush-ops/drush/releases.
-RUN php -r "readfile('https://s3.amazonaws.com/files.drush.org/drush.phar');" > drush
-# Make `drush` executable as a command from anywhere. Destination can be anywhere on $PATH.
-RUN chmod +x drush
-RUN mv drush /usr/local/bin
-# Optional. Enrich the bash startup file with completion and aliases.
-RUN drush init -y
-#Drupal wizard installation
-RUN drush site-install --db-url=sqlite://sites/example.com/files/.ht.sqlite
 
 RUN chmod 777 -R /var/www/html
