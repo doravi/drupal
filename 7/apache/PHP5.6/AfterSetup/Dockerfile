@@ -36,3 +36,16 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
 RUN git clone https://github.com/doravi/drupal7config.git temp \
 	&& cp -r temp/* /var/www/html \
 	&& rm -rf temp
+	
+# Download latest stable release using the code below or browse to github.com/drush-ops/drush/releases.
+RUN php -r "readfile('https://s3.amazonaws.com/files.drush.org/drush.phar');" > drush
+# Make `drush` executable as a command from anywhere. Destination can be anywhere on $PATH.
+RUN chmod +x drush
+RUN mv drush /usr/local/bin
+# Optional. Enrich the bash startup file with completion and aliases.
+RUN drush init -y
+#Drupal wizard installation
+RUN cd /var/www/html
+RUN drush site-install standard --account-name=admin --account-pass=Gigya123 --db-url=sqlite://sites/example.com/files/.ht.sqlite -y
+
+RUN chmod 777 -R /var/www/html
