@@ -45,6 +45,7 @@ RUN mv drush /usr/local/bin
 # Optional. Enrich the bash startup file with completion and aliases.
 RUN drush init -y
 #Drupal wizard installation
-RUN cd /var/www/html
+RUN cd /var/www/html 
+COPY ./settings.php /var/www/html/sites/default/
 RUN drush site-install standard --account-name=admin --account-pass=Gigya123 --db-url=sqlite://sites/example.com/files/.ht.sqlite -y
 RUN chmod 777 -R /var/www/html
